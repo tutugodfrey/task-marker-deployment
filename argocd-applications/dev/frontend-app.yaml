@@ -3,10 +3,10 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-  name: task-marker-fe
+  name: task-marker-fe-dev
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: gcr.io/heptio-images/ks-guestbook-demo:^0.1
+    argocd-image-updater.argoproj.io/image-list: tutug/task-marker-fe
 spec:
   destination:
     namespace: default
@@ -17,5 +17,6 @@ spec:
     path: helm-chart
     repoURL: https://github.com/tutugodfrey/task-marker-fe
     targetRevision: HEAD
-  syncPolicy: {}
+  syncPolicy:
+    automated: {}
                                                                                                                                                                                                                                                     
