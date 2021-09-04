@@ -2,6 +2,7 @@
 
 ZONE=europe-west1-d
 CLUSTER_NAME=my-k8s-cluster
+NETWORK=default
 
 function help() {
   echo '''
@@ -17,12 +18,18 @@ fi
 
 # Create the cluster
 function create_cluster() {
-  NUM_NODE=1 
+  NUM_NODE=1
+  
   if [[ ! -z $1 ]]; then
     echo $1 is number;
 	  NUM_NODE=$1;
-  fi       
-	gcloud container clusters create $CLUSTER_NAME --num-nodes $NUM_NODE --zone $ZONE;
+  fi
+
+  if [ ! -z $2 ]; then
+    NETWORK=$2
+  fi
+
+  gcloud container clusters create $CLUSTER_NAME --num-nodes $NUM_NODE --zone $ZONE --network $NETWORK; 
 }
 
 # resize the cluster

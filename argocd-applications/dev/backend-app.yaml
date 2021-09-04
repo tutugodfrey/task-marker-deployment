@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+
+kind: Application
+
+metadata:
+  name: task-marker-be-dev
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: tutug/task-marker-be
+    # argocd-image-updater.argoproj.io/write-back-method: git
+
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+
+  project: default
+  source:
+    path: helm-chart
+    repoURL: https://github.com/tutugodfrey/task-marker-be
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+                                                                                                                                                                                                                                                    

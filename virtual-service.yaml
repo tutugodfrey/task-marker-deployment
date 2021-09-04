@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: cusomers-route
+spec:
+  hosts:
+  - my-nginx.default.svc.cluster.local
+  gateways:
+    - my-gateway
+  http:
+  - name: my-nginx-v1-routes
+    route:
+    - destination:
+        host: my-nginx.default.svc.cluster.local
+        subset: v1
+      weight: 70
+  - name: my-nginx-v2-routes
+    route:
+    - destination:
+        host: my-nginx.default.svc.cluster.local
+        subset: v2
+      weight: 30

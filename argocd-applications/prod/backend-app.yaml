@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+
+kind: Application
+
+metadata:
+  name: task-marker-backend-prod
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: gcr.io/heptio-images/ks-guestbook-demo:^0.1
+
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+
+  project: default
+  source:
+    helm:
+      values-file:
+        - values-prod.yaml
+    path: helm-chart
+    repoURL: https://github.com/tutugodfrey/task-marker-be
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+                                                                                                                                                                                                                                                    
