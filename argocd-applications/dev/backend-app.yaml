@@ -6,7 +6,8 @@ metadata:
   name: task-marker-be-dev
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: tutug/task-marker-be
+    argocd-image-updater.argoproj.io/image-list: imageupdate=docker.io/tutug/task-marker-be
+    argocd-image-updater.argoproj.io/imageupdate.update-strategy: latest
     # argocd-image-updater.argoproj.io/write-back-method: git
 
 spec:
@@ -16,9 +17,11 @@ spec:
 
   project: default
   source:
-    path: helm-chart
-    repoURL: https://github.com/tutugodfrey/task-marker-be
+    path: task-mark-helm-charts/backend
+    repoURL: https://github.com/tutugodfrey/task-marker-deployment
     targetRevision: HEAD
+    helm:
+    - dev/tag.yaml
+    - dev/replicas.yaml
   syncPolicy:
-    automated: {}
-                                                                                                                                                                                                                                                    
+    automated: {}                                                                                                                                                                                                                                       

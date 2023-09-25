@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.selector.app }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.selector.app }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.selector.app }}
+    spec:
+      initContainers:
+      - name: check-db-service
+        image: busybox
+        # Wait for the database to be ready
+        command: ['sh', '-c', "until nslookup task-marker-db-service.{{ .Values.namespace }}.svc.cluster.local; do echo Waiting for db service; sleep 3; done;"]
+      - name: create-db-task-marker
+        # Create the database for the application to use
+        # SQL is gotten from ConfigMap
+        image: postgres
+        command: ['bash', '-c', 'psql -U postgres -h task-marker-db-service -p 5432 < /sql-files/createdb.sql']
+        volumeMounts:
+        - name: {{ .Values.container.volumes.sql_volume }}
+          mountPath: /sql-files
+      containers:
+      - name: {{ .Values.container.name }}
+        image: {{ .Values.container.image }}:{{ .Values.container.tag }}
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+          limits:
+            cpu: 200m
+            memory: 200Mi
+        ports:
+        - containerPort: {{ .Values.container.containerPort }}
+        env:
+          - name: USE_DB
+            value: '1'
+          - name: DATABASE_URL
+            value: {{ .Values.db.container.DB_URL }}
+        livenessProbe:
+          httpGet:
+            port: {{ .Values.container.containerPort }}
+            path: /api
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        imagePullPolicy: Always
+      volumes:
+      - name: {{ .Values.container.volumes.sql_volume }}
+        configMap:
+          name: {{ .Values.configMap.name }}

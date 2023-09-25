@@ -1,0 +1,46 @@
+namespace: task-marker-dev
+
+environment: develop
+
+deployment:
+  name: task-marker-fe-deployment
+  replicaCount: 1
+   
+container:
+  name: task-marker-fe-container
+  image: tutug/task-marker-fe
+  tag: dev-357
+  containerPort: 80
+
+selector:
+  app: task-marker-fe
+
+service:
+  name: task-marker-fe-service
+  port: 80
+  targetPort: 80
+  type: LoadBalancer
+
+ingress:
+  name: task-marker-fe
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 200Mi
+
+volumes:
+  shared_logs:
+    name: shared-logs
+    mountPath: /var/log/nginx
+  nginx_volume:
+    name: nginx-config
+    mountPath: /etc/nginx/nginx.conf
+    # mountPath: /etc/nginx/conf.d/
+
+configMap:
+  name: nginx-config
+  backend_service_endpoint: http://task-marker-be-service.task-marker-dev.svc.cluster.local:3005/api
