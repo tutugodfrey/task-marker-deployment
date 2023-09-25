@@ -16,7 +16,7 @@ spec:
 
   project: default
   source:
-    path: task-mark-helm-charts/backend
+    path: task-mark-helm-charts/frontend
     repoURL: https://github.com/tutugodfrey/task-marker-deployment
     targetRevision: HEAD
     helm:
