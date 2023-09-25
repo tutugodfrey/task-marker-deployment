@@ -21,7 +21,8 @@ spec:
     repoURL: https://github.com/tutugodfrey/task-marker-deployment
     targetRevision: HEAD
     helm:
-    - dev/tag.yaml
-    - dev/replicas.yaml
+      valueFiles:
+      - dev/tag.yaml
+      - dev/replicas.yaml
   syncPolicy:
     automated: {}                                                                                                                                                                                                                                       
