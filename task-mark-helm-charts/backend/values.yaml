@@ -1,0 +1,54 @@
+namespace: task-marker-dev
+
+environment: develop
+
+deployment:
+  name: task-marker-be-deployment
+  replicaCount: 1
+
+container:
+  name: task-marker-be-container
+  image: tutug/task-marker-be
+  tag: "dev-5662519437"
+  containerPort: 3005
+  volumes:
+    sql_volume: sql-volume
+
+selector:
+  app: task-marker-be
+  run: db
+
+service:
+  name: task-marker-be-service
+  type: LoadBalancer
+  port: 3005
+  targetPort: 3005
+
+ingress:
+  name: task-marker-be
+  host: api.develop.taskmarker.com
+
+configMap:
+  name: sql-config
+  dbName: task_marker
+
+db:
+  deployment:
+    name: task-marker-db-deployment
+    replicaCount: 1
+  container:
+    name: task-marker-db-container
+    imageRepository: postgres
+    imageTag: latest
+    containerPort: 5432
+    DB_URL: postgres://postgres:postgres@task-marker-db-service:5432/task_marker
+  resources:
+    limits:
+      cpu: 200m
+      memory: 2Gi
+
+db_service:
+  name: task-marker-db-service
+  type: ClusterIP
+  port: 5432
+  targetPort: 5432

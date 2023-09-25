@@ -6,7 +6,9 @@ metadata:
   name: task-marker-fe-dev
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: tutug/task-marker-fe
+    argocd-image-updater.argoproj.io/image-list: imageupdate=docker.io/tutug/task-marker-fe
+    argocd-image-updater.argoproj.io/imageupdate.update-strategy: latest
+
 spec:
   destination:
     namespace: default
@@ -14,9 +16,13 @@ spec:
 
   project: default
   source:
-    path: helm-chart
-    repoURL: https://github.com/tutugodfrey/task-marker-fe
+    path: task-mark-helm-charts/backend
+    repoURL: https://github.com/tutugodfrey/task-marker-deployment
     targetRevision: HEAD
+    helm:
+      valueFiles:
+        - dev/tag.yaml
+        - dev/replicas.yaml
   syncPolicy:
     automated: {}
                                                                                                                                                                                                                                                     
