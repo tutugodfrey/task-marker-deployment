@@ -6,7 +6,7 @@ metadata:
   name: task-marker-backend-staging
   namespace: argocd
   annotations:
-    argocd.argoproj.io/image-list: tutug/task-marker-be
+    argocd-image-updater.argoproj.io/image-list: tutug/task-marker-be
 
 spec:
   destination:

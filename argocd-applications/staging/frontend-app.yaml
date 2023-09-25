@@ -6,7 +6,7 @@ metadata:
         name: task-marker-fe-staging
   namespace: argocd
   annotations:
-    argocd.argoproj.io/image-list: tutug/task-marker-fe
+    argocd-image-updater.argoproj.io/image-list: tutug/task-marker-fe
 spec:
   destination:
     namespace: default

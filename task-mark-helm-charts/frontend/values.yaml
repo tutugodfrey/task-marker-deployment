@@ -23,6 +23,7 @@ service:
 
 ingress:
   name: task-marker-fe
+  host: develop.taskmarker.com
 
 resources:
   requests:

@@ -1,5 +1,7 @@
 namespace: task-marker-dev
 
+environment: develop
+
 deployment:
   name: task-marker-be-deployment
   replicaCount: 1
@@ -21,6 +23,10 @@ service:
   type: LoadBalancer
   port: 3005
   targetPort: 3005
+
+ingress:
+  name: task-marker-be
+  host: api.develop.taskmarker.com
 
 configMap:
   name: sql-config
