@@ -19,7 +19,7 @@ service:
   name: task-marker-fe-service
   port: 80
   targetPort: 80
-  type: LoadBalancer
+  type: NodePort
 
 ingress:
   name: task-marker-fe
