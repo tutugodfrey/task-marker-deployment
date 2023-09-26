@@ -19,7 +19,7 @@ service:
   name: task-marker-fe-service
   port: 80
   targetPort: 80
-  type: NodePort
+  type: ClusterIP
 
 ingress:
   name: task-marker-fe
