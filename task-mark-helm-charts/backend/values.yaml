@@ -20,7 +20,7 @@ selector:
 
 service:
   name: task-marker-be-service
-  type: LoadBalancer
+  type: ClusterIP
   port: 3005
   targetPort: 3005
 
